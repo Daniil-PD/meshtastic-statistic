@@ -1,0 +1,1 @@
+# Integration test for the daily report flow

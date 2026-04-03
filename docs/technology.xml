@@ -1,0 +1,43 @@
+<TechnologyStack VERSION="0.3.0">
+  <Runtime>Python 3.13</Runtime>
+  <Language>Python 3.13</Language>
+  <Framework>Нет</Framework>
+
+  <Dependencies>
+    <dep name="meshtastic" version="2.7.8" purpose="Основная библиотека для взаимодействия с устройствами Meshtastic." />
+    <dep name="requests" version="2.x" purpose="Для выполнения HTTP-запросов к внешним API (например, API погоды)." />
+    <dep name="schedule" version="1.x" purpose="Для запуска отправки отчетов по расписанию (раз в день)." />
+  </Dependencies>
+
+  <VersionConstraints>
+     <constraint lib="meshtastic" min="2.7.0" max="2.8.x" reason="Проект зависит от API, стабильного в этих версиях." />
+  </VersionConstraints>
+
+  <Tooling>
+     <tool name="installer" value="pip" version="*" />
+     <tool name="test-runner" value="pytest" version="8.x" />
+  </Tooling>
+
+  <Testing>
+     <module-level>
+       <command>pytest tests/unit</command>
+       <focus>Модульные тесты для отдельных функций (например, расчет статистики) с использованием mock-объектов.</focus>
+     </module-level>
+     <integration-level>
+       <command>pytest tests/integration</command>
+       <focus>Интеграционные тесты, проверяющие взаимодействие между модулями сбора данных, генерации отчета и отправки.</focus>
+     </integration-level>
+     <mocking-policy>Использовать `unittest.mock` для изоляции зависимостей от Meshtastic API и API погоды во время тестов.</mocking-policy>
+  </Testing>
+
+  <Observability>
+     <logger>Стандартный модуль `logging` в Python.</logger>
+     <log-format>[%(asctime)s] [%(levelname)s] [%(module)s] - %(message)s</log-format>
+     <required-fields>Нет строгих требований, но логи должны отражать ключевые события: запуск, сбор данных, отправка отчета, ошибки.</required-fields>
+     <redaction>Не записывать в логи API-ключи и другую конфиденциальную информацию.</redaction>
+  </Observability>
+
+  <DeliveryShape>
+     <shape>Долгоживущий процесс (демон), запущенный на сервере или одноплатном компьютере (например, Raspberry Pi) с постоянным доступом к сети и устройству Meshtastic.</shape>
+  </DeliveryShape>
+</TechnologyStack>

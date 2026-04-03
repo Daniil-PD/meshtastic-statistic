@@ -1,0 +1,78 @@
+<VerificationPlan VERSION="1.0.0">
+  <Policy>
+    Каждый модуль должен иметь модульные тесты.
+    Ключевые взаимодействия между модулями должны быть покрыты интеграционными тестами.
+    Все тесты должны выполняться через `pytest`.
+  </Policy>
+
+  <CriticalFlows>
+    <V-DF-DAILY-REPORT FLOW_ID="DF-DAILY-REPORT">
+      <description>Проверка полного цикла создания и отправки отчета.</description>
+      <test-files>
+        <file>tests/integration/test_daily_report_flow.py</file>
+      </test-files>
+      <log-evidence>
+        <description>
+          Логи должны соответствовать формату '[ASCTIME] [LEVEL] [MODULE] - MESSAGE'.
+          Проверяется последовательность ключевых событий в логах.
+        </description>
+        <marker>[INFO] [Scheduler] - Daily report job started.</marker>
+        <marker>[INFO] [StatsCalculator] - Statistics calculated.</marker>
+        <marker>[INFO] [WeatherService] - Weather data fetched.</marker>
+        <marker>[INFO] [ReportGenerator] - Report generated.</marker>
+        <marker>[INFO] [MeshtasticInterface] - Report sent successfully.</marker>
+        <failure-marker>[ERROR]</failure-marker>
+      </log-evidence>
+    </V-DF-DAILY-REPORT>
+  </CriticalFlows>
+
+  <ModuleChecks>
+    <V-M-CONFIG MODULE="M-CONFIG">
+      <test-files><file>tests/unit/test_config.py</file></test-files>
+      <checks>Проверка загрузки и доступа к параметрам конфигурации.</checks>
+    </V-M-CONFIG>
+    <V-M-DATASTORE MODULE="M-DATASTORE">
+      <test-files><file>tests/unit/test_datastore.py</file></test-files>
+      <checks>Проверка добавления, хранения и очистки данных.</checks>
+    </V-M-DATASTORE>
+    <V-M-COLLECTOR MODULE="M-COLLECTOR">
+      <test-files><file>tests/integration/test_collector.py</file></test-files>
+      <checks>Проверка, что пакеты правильно сохраняются в DataStore.</checks>
+    </V-M-COLLECTOR>
+    <V-M-STATS MODULE="M-STATS">
+      <test-files><file>tests/unit/test_stats.py</file></test-files>
+      <checks>
+        Проверка корректности всех статистических расчетов:
+        - Расчет общего количества сообщений.
+        - Определение N самых активных участников по количеству текстовых сообщений.
+        - Определение N самых "слышимых" узлов по общему количеству полученных пакетов.
+        - Расчет процентного соотношения типов сообщений (PortNum).
+      </checks>
+    </V-M-STATS>
+    <V-M-WEATHER MODULE="M-WEATHER">
+      <test-files><file>tests/unit/test_weather.py</file></test-files>
+      <checks>Проверка обработки успешных и неуспешных ответов от API погоды (с mock-объектом).</checks>
+    </V-M-WEATHER>
+    <V-M-REPORTER MODULE="M-REPORTER">
+      <test-files><file>tests/unit/test_reporter.py</file></test-files>
+      <checks>Проверка корректности форматирования отчета.</checks>
+    </V-M-REPORTER>
+    <V-M-MESHTASTIC MODULE="M-MESHTASTIC">
+      <test-files><file>tests/integration/test_meshtastic_interface.py</file></test-files>
+      <checks>Проверка отправки сообщений (с mock-объектом).</checks>
+    </V-M-MESHTASTIC>
+    <V-M-SCHEDULER MODULE="M-SCHEDULER">
+      <test-files><file>tests/integration/test_scheduler.py</file></test-files>
+      <checks>Проверка, что задача запускается по расписанию и вызывает нужные модули.</checks>
+    </V-M-SCHEDULER>
+  </ModuleChecks>
+
+  <PhaseGates>
+    <Phase-1-Gate>
+      Все модульные тесты для M-CONFIG, M-DATASTORE, M-COLLECTOR, M-STATS должны проходить.
+    </Phase-1-Gate>
+    <Phase-2-Gate>
+      Все модульные и интеграционные тесты должны проходить. Сквозной тест V-DF-DAILY-REPORT должен быть успешным.
+    </Phase-2-Gate>
+  </PhaseGates>
+</VerificationPlan>

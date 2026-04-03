@@ -1,0 +1,71 @@
+<KnowledgeGraph VERSION="1.0.0">
+  <M-CONFIG NAME="ConfigManager" TYPE="UTILITY">
+    <file>src/config.py</file>
+    <verification-ref>V-M-CONFIG</verification-ref>
+    <annotations>
+      <fn-load_config>Загружает конфигурацию из файла или переменных окружения.</fn-load_config>
+    </annotations>
+  </M-CONFIG>
+
+  <M-DATASTORE NAME="DataStore" TYPE="DATA_LAYER">
+    <file>src/datastore.py</file>
+    <verification-ref>V-M-DATASTORE</verification-ref>
+    <annotations>
+      <fn-add_packet>Добавляет пакет в хранилище.</fn-add_packet>
+      <fn-get_packets>Возвращает все пакеты за период.</fn-get_packets>
+      <fn-clear>Очищает хранилище.</fn-clear>
+    </annotations>
+  </M-DATASTORE>
+
+  <M-COLLECTOR NAME="PacketCollector" TYPE="CORE_LOGIC">
+    <file>src/collector.py</file>
+    <verification-ref>V-M-COLLECTOR</verification-ref>
+    <dependencies>
+      <CrossLink target="M-DATASTORE"/>
+      <CrossLink target="M-MESHTASTIC"/>
+    </dependencies>
+  </M-COLLECTOR>
+
+  <M-STATS NAME="StatsCalculator" TYPE="CORE_LOGIC">
+    <file>src/stats.py</file>
+    <verification-ref>V-M-STATS</verification-ref>
+    <dependencies>
+      <CrossLink target="M-DATASTORE"/>
+    </dependencies>
+  </M-STATS>
+
+  <M-WEATHER NAME="WeatherService" TYPE="INTEGRATION">
+    <file>src/weather.py</file>
+    <verification-ref>V-M-WEATHER</verification-ref>
+    <dependencies>
+      <CrossLink target="M-CONFIG"/>
+    </dependencies>
+  </M-WEATHER>
+
+  <M-REPORTER NAME="ReportGenerator" TYPE="CORE_LOGIC">
+    <file>src/reporter.py</file>
+    <verification-ref>V-M-REPORTER</verification-ref>
+    <dependencies>
+      <CrossLink target="M-STATS"/>
+      <CrossLink target="M-WEATHER"/>
+    </dependencies>
+  </M-REPORTER>
+
+  <M-MESHTASTIC NAME="MeshtasticInterface" TYPE="INTEGRATION">
+    <file>src/meshtastic_interface.py</file>
+    <verification-ref>V-M-MESHTASTIC</verification-ref>
+    <dependencies>
+      <CrossLink target="M-CONFIG"/>
+    </dependencies>
+  </M-MESHTASTIC>
+
+  <M-SCHEDULER NAME="Scheduler" TYPE="ENTRY_POINT">
+    <file>src/main.py</file>
+    <verification-ref>V-M-SCHEDULER</verification-ref>
+    <dependencies>
+      <CrossLink target="M-COLLECTOR"/>
+      <CrossLink target="M-REPORTER"/>
+      <CrossLink target="M-MESHTASTIC"/>
+    </dependencies>
+  </M-SCHEDULER>
+</KnowledgeGraph>
