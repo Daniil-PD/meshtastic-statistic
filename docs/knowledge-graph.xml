@@ -22,8 +22,13 @@
     <verification-ref>V-M-COLLECTOR</verification-ref>
     <dependencies>
       <CrossLink target="M-DATASTORE"/>
-      <CrossLink target="M-MESHTASTIC"/>
     </dependencies>
+    <annotations>
+      <fn-handle_packet>Обрабатывает входящий пакет.</fn-handle_packet>
+      <fn-start>Запускает сборщик пакетов.</fn-start>
+      <fn-stop>Останавливает сборщик пакетов.</fn-stop>
+      <fn-is_running>Проверяет, запущен ли сборщик.</fn-is_running>
+    </annotations>
   </M-COLLECTOR>
 
   <M-STATS NAME="StatsCalculator" TYPE="CORE_LOGIC">
@@ -32,6 +37,13 @@
     <dependencies>
       <CrossLink target="M-DATASTORE"/>
     </dependencies>
+    <annotations>
+      <fn-get_total_messages>Подсчитывает общее количество сообщений.</fn-get_total_messages>
+      <fn-get_top_senders>Определяет N самых активных участников.</fn-get_top_senders>
+      <fn-get_top_heard_nodes>Определяет N самых "слышимых" узлов.</fn-get_top_heard_nodes>
+      <fn-get_portnum_distribution>Рассчитывает распределение типов сообщений.</fn-get_portnum_distribution>
+      <fn-get_all_stats>Возвращает всю статистику в одном отчете.</fn-get_all_stats>
+    </annotations>
   </M-STATS>
 
   <M-WEATHER NAME="WeatherService" TYPE="INTEGRATION">
