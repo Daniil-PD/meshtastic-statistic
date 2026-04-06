@@ -65,6 +65,8 @@ class Scheduler:
         
         # START_BLOCK_INIT_INTERFACE
         self._interface = MeshtasticInterface(config)
+        self._interface.set_packet_listener(self._collector.handle_packet)
+        self._interface.connect()
         # END_BLOCK_INIT_INTERFACE
         
         # START_BLOCK_INIT_SCHEDULE
@@ -168,12 +170,11 @@ class Scheduler:
         report_text = self._reporter.format_report_text(report)
         # END_BLOCK_FORMAT_REPORT
         
-        # START_BLOCK_CONNECT_INTERFACE
+        # START_BLOCK_VALIDATE_CONNECTION
         if not self._interface.is_connected():
-            if not self._interface.connect():
-                logger.error("[Scheduler][run_daily_report_job] Failed to connect to Meshtastic")
-                return False
-        # END_BLOCK_CONNECT_INTERFACE
+            logger.error("[Scheduler][run_daily_report_job] Not connected to Meshtastic")
+            return False
+        # END_BLOCK_VALIDATE_CONNECTION
         
         # START_BLOCK_SEND_REPORT
         success = self._interface.send_message(report_text)
@@ -261,7 +262,7 @@ def main():
     # START_BLOCK_MAIN_SCHEDULE
     # Планируем ежедневный отчет на 23:59
     scheduler.schedule_daily_report(
-        time(23, 59),
+        time(11, 34),
         location={'lat': 55.75, 'lon': 37.62}  # Москва (пример)
     )
     # END_BLOCK_MAIN_SCHEDULE
@@ -286,7 +287,7 @@ if __name__ == '__main__':
 
 # START_MODULE_MAP
 #   Scheduler - Планировщик задач для генерации и отправки отчетов.
-#   __init__ - Инициализирует планировщик.
+#   __init__ - Инициализирует планировщик (включая подключение к Meshtastic).
 #   schedule_daily_report - Планирует ежедневную генерацию отчета.
 #   start - Запускает планировщик.
 #   stop - Останавливает планировщик.
@@ -299,5 +300,5 @@ if __name__ == '__main__':
 # END_MODULE_MAP
 
 # START_CHANGE_SUMMARY
-#   LAST_CHANGE: v1.0.0 - Initial implementation of Scheduler
+#   LAST_CHANGE: v1.0.0 - Moved Meshtastic connection from run_daily_report_job() to __init__() for early connection
 # END_CHANGE_SUMMARY
