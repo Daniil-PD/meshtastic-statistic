@@ -33,7 +33,18 @@
     </V-M-CONFIG>
     <V-M-DATASTORE MODULE="M-DATASTORE">
       <test-files><file>tests/unit/test_datastore.py</file></test-files>
-      <checks>Проверка добавления, хранения и очистки данных.</checks>
+      <checks>
+        Проверка корректности работы с SQLite базой данных:
+        - Создание базы данных и таблицы при инициализации.
+        - Добавление пакетов в базу данных.
+        - Получение пакетов за период.
+        - Подсчет количества пакетов.
+        - Получение списка уникальных отправителей.
+        - Автоматическая очистка данных старше 6 месяцев.
+        - Очистка хранилища.
+        - Закрытие подключения к базе данных.
+        - Получение статистики хранилища.
+      </checks>
     </V-M-DATASTORE>
     <V-M-COLLECTOR MODULE="M-COLLECTOR">
       <test-files><file>tests/integration/test_collector.py</file></test-files>
@@ -59,7 +70,24 @@
     </V-M-REPORTER>
     <V-M-MESHTASTIC MODULE="M-MESHTASTIC">
       <test-files><file>tests/integration/test_meshtastic_interface.py</file></test-files>
-      <checks>Проверка отправки сообщений (с mock-объектом).</checks>
+      <checks>
+        Проверка подключения и отправки сообщений через serial port:
+        - Подключение к устройству через meshtastic.serial_interface.SerialInterface
+        - Отправка текстовых сообщений через sendText()
+        - Отключение и закрытие интерфейса
+        - Проверка состояния is_connected()
+        - Получение информации об узле через get_node_info()
+        - Обработка ошибок при отсутствии serial port
+        - Регистрация обработчика входящих пакетов через set_packet_listener()
+        - Получение и обработка входящих пакетов через событие meshtastic.receive
+      </checks>
+      <log-evidence>
+        <marker>[MeshtasticInterface][connect] Connected to node</marker>
+        <marker>[MeshtasticInterface][send_message] Message sent successfully</marker>
+        <marker>[MeshtasticInterface][disconnect] Disconnected</marker>
+        <marker>[MeshtasticInterface][set_packet_listener] Packet listener registered</marker>
+        <marker>[MeshtasticInterface][_on_receive] Received packet</marker>
+      </log-evidence>
     </V-M-MESHTASTIC>
     <V-M-SCHEDULER MODULE="M-SCHEDULER">
       <test-files><file>tests/integration/test_scheduler.py</file></test-files>

@@ -24,6 +24,7 @@ def load_config():
     # START_BLOCK_LOAD_ENV_VARS
     config['TELEGRAM_TOKEN'] = os.getenv('TELEGRAM_TOKEN')
     config['WEATHER_API_KEY'] = os.getenv('WEATHER_API_KEY')
+    config['MESHTASTIC_SERIAL_PORT'] = os.getenv('MESHTASTIC_SERIAL_PORT')
     # END_BLOCK_LOAD_ENV_VARS
 
     return config

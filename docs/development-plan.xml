@@ -42,9 +42,15 @@
       <verification-ref>V-M-CONFIG</verification-ref>
     </M-CONFIG>
     <M-DATASTORE NAME="DataStore" TYPE="DATA_LAYER">
-      <purpose>Хранит пакеты Meshtastic в памяти.</purpose>
+      <purpose>Хранит пакеты Meshtastic в SQLite базе данных с политикой хранения 6 месяцев.</purpose>
       <target-path>src/datastore.py</target-path>
       <verification-ref>V-M-DATASTORE</verification-ref>
+      <features>
+        <feature>Постоянное хранение данных в SQLite</feature>
+        <feature>Автоматическая очистка данных старше 6 месяцев</feature>
+        <feature>Индексация по времени получения и идентификаторам</feature>
+        <feature>Сериализация пакетов в JSON формате</feature>
+      </features>
     </M-DATASTORE>
     <M-COLLECTOR NAME="PacketCollector" TYPE="CORE_LOGIC">
       <purpose>Прослушивает и сохраняет пакеты Meshtastic.</purpose>

@@ -11,10 +11,21 @@
     <file>src/datastore.py</file>
     <verification-ref>V-M-DATASTORE</verification-ref>
     <annotations>
-      <fn-add_packet>Добавляет пакет в хранилище.</fn-add_packet>
+      <fn-__init__>Инициализирует хранилище с SQLite базой данных.</fn-__init__>
+      <fn-add_packet>Добавляет пакет в хранилище с автоматической очисткой старых данных.</fn-add_packet>
       <fn-get_packets>Возвращает все пакеты за период.</fn-get_packets>
+      <fn-get_packet_count>Возвращает количество пакетов за период.</fn-get_packet_count>
+      <fn-get_unique_senders>Возвращает список уникальных отправителей за период.</fn-get_unique_senders>
       <fn-clear>Очищает хранилище.</fn-clear>
+      <fn-close>Закрывает подключение к базе данных.</fn-close>
+      <fn-get_storage_stats>Возвращает статистику хранилища.</fn-get_storage_stats>
+      <fn-_cleanup_old_data>Удаляет данные старше 6 месяцев.</fn-_cleanup_old_data>
     </annotations>
+    <storage-policy>
+      <retention-months>6</retention-months>
+      <database>SQLite</database>
+      <default-path>data/meshtastic.db</default-path>
+    </storage-policy>
   </M-DATASTORE>
 
   <M-COLLECTOR NAME="PacketCollector" TYPE="CORE_LOGIC">
@@ -80,15 +91,18 @@
     <verification-ref>V-M-MESHTASTIC</verification-ref>
     <dependencies>
       <CrossLink target="M-CONFIG"/>
+      <CrossLink target="M-COLLECTOR"/>
     </dependencies>
     <annotations>
-      <fn-__init__>Инициализирует интерфейс Meshtastic.</fn-__init__>
-      <fn-connect>Подключается к сети Meshtastic.</fn-connect>
-      <fn-disconnect>Отключается от сети Meshtastic.</fn-disconnect>
-      <fn-send_message>Отправляет сообщение в сеть Meshtastic.</fn-send_message>
-      <fn-_send_mock_message>Mock-реализация отправки сообщения.</fn-_send_mock_message>
+      <fn-__init__>Инициализирует интерфейс Meshtastic с загрузкой конфигурации serial port.</fn-__init__>
+      <fn-connect>Подключается к сети Meshtastic через serial port используя meshtastic.serial_interface.SerialInterface и подписывается на входящие пакеты.</fn-connect>
+      <fn-disconnect>Отключается от сети Meshtastic и закрывает serial интерфейс.</fn-disconnect>
+      <fn-send_message>Отправляет сообщение в сеть Meshtastic через serial interface.</fn-send_message>
       <fn-is_connected>Проверяет, подключен ли интерфейс.</fn-is_connected>
       <fn-get_sent_messages>Возвращает список отправленных сообщений.</fn-get_sent_messages>
+      <fn-get_node_info>Возвращает информацию о локальном узле из localConfig.</fn-get_node_info>
+      <fn-set_packet_listener>Устанавливает обработчик входящих пакетов (callback).</fn-set_packet_listener>
+      <fn-_on_receive>Внутренний обработчик событий meshtastic.receive, вызывает зарегистрированный listener.</fn-_on_receive>
     </annotations>
   </M-MESHTASTIC>
 
