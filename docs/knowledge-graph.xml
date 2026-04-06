@@ -52,6 +52,12 @@
     <dependencies>
       <CrossLink target="M-CONFIG"/>
     </dependencies>
+    <annotations>
+      <fn-__init__>Инициализирует сервис погоды.</fn-__init__>
+      <fn-get_weather>Получает данные о погоде для указанной локации.</fn-get_weather>
+      <fn-_fetch_weather_data>Выполняет запрос к API погоды (mock-реализация).</fn-_fetch_weather_data>
+      <fn-get_last_weather>Возвращает последние полученные данные о погоде.</fn-get_last_weather>
+    </annotations>
   </M-WEATHER>
 
   <M-REPORTER NAME="ReportGenerator" TYPE="CORE_LOGIC">
@@ -61,6 +67,12 @@
       <CrossLink target="M-STATS"/>
       <CrossLink target="M-WEATHER"/>
     </dependencies>
+    <annotations>
+      <fn-__init__>Инициализирует генератор отчетов.</fn-__init__>
+      <fn-generate_report>Генерирует отчет за период.</fn-generate_report>
+      <fn-_build_summary>Создает текстовое резюме отчета.</fn-_build_summary>
+      <fn-format_report_text>Форматирует отчет в текстовом виде.</fn-format_report_text>
+    </annotations>
   </M-REPORTER>
 
   <M-MESHTASTIC NAME="MeshtasticInterface" TYPE="INTEGRATION">
@@ -69,6 +81,15 @@
     <dependencies>
       <CrossLink target="M-CONFIG"/>
     </dependencies>
+    <annotations>
+      <fn-__init__>Инициализирует интерфейс Meshtastic.</fn-__init__>
+      <fn-connect>Подключается к сети Meshtastic.</fn-connect>
+      <fn-disconnect>Отключается от сети Meshtastic.</fn-disconnect>
+      <fn-send_message>Отправляет сообщение в сеть Meshtastic.</fn-send_message>
+      <fn-_send_mock_message>Mock-реализация отправки сообщения.</fn-_send_mock_message>
+      <fn-is_connected>Проверяет, подключен ли интерфейс.</fn-is_connected>
+      <fn-get_sent_messages>Возвращает список отправленных сообщений.</fn-get_sent_messages>
+    </annotations>
   </M-MESHTASTIC>
 
   <M-SCHEDULER NAME="Scheduler" TYPE="ENTRY_POINT">
@@ -79,5 +100,17 @@
       <CrossLink target="M-REPORTER"/>
       <CrossLink target="M-MESHTASTIC"/>
     </dependencies>
+    <annotations>
+      <fn-__init__>Инициализирует планировщик.</fn-__init__>
+      <fn-schedule_daily_report>Планирует ежедневную генерацию отчета.</fn-schedule_daily_report>
+      <fn-start>Запускает планировщик.</fn-start>
+      <fn-stop>Останавливает планировщик.</fn-stop>
+      <fn-is_running>Проверяет, запущен ли планировщик.</fn-is_running>
+      <fn-run_daily_report_job>Выполняет задачу генерации и отправки ежедневного отчета.</fn-run_daily_report_job>
+      <fn-get_scheduled_tasks>Возвращает список запланированных задач.</fn-get_scheduled_tasks>
+      <fn-run_async>Асинхронно запускает планировщик с выполнением задач по расписанию.</fn-run_async>
+      <fn-_check_and_run_tasks>Проверяет и выполняет задачи по расписанию.</fn-_check_and_run_tasks>
+      <fn-main>Точка входа приложения.</fn-main>
+    </annotations>
   </M-SCHEDULER>
 </KnowledgeGraph>

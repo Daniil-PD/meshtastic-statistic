@@ -13,7 +13,7 @@
       <step-3 MODULE="M-COLLECTOR" ACTION="Реализовать сборщик пакетов Meshtastic." />
       <step-4 MODULE="M-STATS" ACTION="Реализовать калькулятор статистики." />
     </Phase-1>
-    <Phase-2 NAME="Reporting and Scheduling">
+    <Phase-2 NAME="Reporting and Scheduling" status="done">
       <description>Реализация модулей для получения данных о погоде, создания и отправки отчетов по расписанию.</description>
       <step-1 MODULE="M-WEATHER" ACTION="Создать сервис для получения данных о погоде." />
       <step-2 MODULE="M-MESHTASTIC" ACTION="Создать интерфейс для взаимодействия с Meshtastic." />
